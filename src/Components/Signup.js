@@ -1,8 +1,8 @@
-import React from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+// import axios from 'axios';
+// import { Link } from 'react-router-dom';
 
-export default class Signup extends React.Component {
+export default class Signup extends Component {
 
   state = {
     fullname: '',
@@ -13,6 +13,7 @@ export default class Signup extends React.Component {
   };
 
   handleChange = (e) => {
+    // console.log("handleChange", e.target.value)
     const { name, value } = e.target
     this.setState({
       [name]: value
@@ -21,18 +22,24 @@ export default class Signup extends React.Component {
 
   // create a user object based on the components state
   handleSubmit = (e) => {
-    e.preventDefault();
-    const { fullname, email, password, password_confirmation } = this.state;
+    
+    e.preventDefault()
+    const { fullname, email, password, password_confirmation } = this.state
     let user = {
       fullname: fullname,
       email: email,
       password: password,
       password_confirmation: password_confirmation
-    };
-
+    }
+    console.log("handleSubmit", this.state)
     // POST data to Rails server for authentication
+
+    // fetch('http://localhost:3001/users', {user}, {withCredentials: true})
+    // .then(response => response.json())
+
     axios.post('http://localhost:3001/users', {user}, {withCredentials: true})
       .then(response => {
+        // console.log("Signup post response", response)
         if (response.data.status === 'created') {
           this.props.handleLogin(response.data)
           this.redirect()
@@ -58,7 +65,7 @@ export default class Signup extends React.Component {
         </ul>
       </div>
     )
-  }
+  };
 
   render () {
     const { fullname, email, password, password_confirmation } = this.state
@@ -98,12 +105,12 @@ export default class Signup extends React.Component {
             Sign Up
           </button>
 
-          <div>
+          {/* <div>
             or <Link to='/login'>log in</Link>
-          </div>
+          </div> */}
 
         </form>
       </div>
     )
-  }
+  };
 };
